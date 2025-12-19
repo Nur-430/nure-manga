@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - NuRE Manga</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <a href="index.html"><strong>NuRE</strong></a>
+    </div>
+    <div class="header-right">
+      <button onclick="logoutAdmin()">🚪 Logout</button>
+    </div>
+  </header>
+
+  <main style="padding: 20px;">
+    <h2>Panel Admin</h2>
+
+    <div id="adminForm">
+      <h3 id="formTitle">Tambah Manga Baru</h3>
+      <input type="hidden" id="editId" value="" />
+      <div style="display: grid; gap: 12px; max-width: 600px;">
+        <input type="text" id="titleRomanji" placeholder="Judul Romanji" required />
+        <input type="text" id="titleOriginal" placeholder="Judul Asli" required />
+        <input type="text" id="coverUrl" placeholder="URL Gambar Cover" required />
+        <input type="text" id="author" placeholder="Penulis" required />
+        <input type="number" id="year" placeholder="Tahun Rilis" required />
+        <select id="status">
+          <option value="ongoing">Sedang Berjalan</option>
+          <option value="end">Selesai</option>
+          <option value="hiatus">Hiatus</option>
+        </select>
+        <textarea id="genres" placeholder="Genre (pisahkan dengan koma, contoh: Action, Fantasy)" rows="2"></textarea>
+        <textarea id="synopsis" placeholder="Sinopsis" rows="4"></textarea>
+        <button onclick="saveManga()">💾 Simpan Manga</button>
+      </div>
+    </div>
+
+    <hr style="margin: 30px 0;" />
+
+    <h3>Daftar Manga</h3>
+    <div id="mangaList" style="display: grid; gap: 12px;"></div>
+  </main>
+
+<!-- Di head atau sebelum </body> -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script src="firebase.js"></script>
+  <script src="script.js"></script>
+  <script>
+    checkAdminAccess();
+    loadAdminMangaList();
+  </script>
+</body>
+</html>

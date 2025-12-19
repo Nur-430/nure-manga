@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NuRE Manga</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <a href="index.html"><strong>NuRE</strong></a>
+    </div>
+    <div class="header-right">
+      <input type="text" id="searchInput" placeholder="Cari manga..." />
+    </div>
+  </header>
+
+  <!-- Navigation Menu -->
+  <nav class="top-nav">
+    <button>Genre</button>
+    <button>List</button>
+    <button>Terbaru</button>
+    <button>Populer</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <h2>Rekomendasi Hari Ini</h2>
+    <div id="recommendation" class="manga-grid"></div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <footer class="nav-bar">
+    <a href="index.html">🏠 Home</a>
+    <a href="bookmark.html">🔖 Bookmark</a>
+    <a href="account.html">👤 Akun</a>
+  </footer>
+
+<!-- Di head atau sebelum </body> -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script src="firebase.js"></script> <!-- file config kita -->
+
+  <script src="script.js"></script>
+  <script>
+    getAllManga();
+  </script>
+</body>
+</html>

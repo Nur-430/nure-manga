@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bookmark - NuRE Manga</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <a href="index.html"><strong>NuRE</strong></a>
+    </div>
+    <div class="header-right">
+      <span>🔖 Bookmark</span>
+    </div>
+  </header>
+
+  <main>
+    <h2>Manga yang Kamu Simpan</h2>
+    <div id="bookmarks" class="manga-grid"></div>
+    <p id="emptyMsg" style="text-align: center; color: #888; display: none;">
+      Belum ada manga yang disimpan.
+    </p>
+  </main>
+
+  <footer class="nav-bar">
+    <a href="index.html">🏠 Home</a>
+    <a href="bookmark.html">🔖 Bookmark</a>
+    <a href="account.html">👤 Akun</a>
+  </footer>
+
+<!-- Di head atau sebelum </body> -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script src="firebase.js"></script>
+  <script src="script.js"></script>
+  <script>
+    getAllManga();
+  </script>
+</body>
+</html>

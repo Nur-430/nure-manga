@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="pageTitle">Manga - NuRE</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <a href="index.html"><strong>NuRE</strong></a>
+    </div>
+    <div class="header-right">
+      <span id="mangaTitle">Loading...</span>
+    </div>
+  </header>
+
+  <main id="mangaDetail" class="manga-detail">
+    <!-- Diisi oleh JS -->
+  </main>
+
+  <footer class="nav-bar">
+    <a href="index.html">🏠 Home</a>
+    <a href="bookmark.html">🔖 Bookmark</a>
+    <a href="account.html">👤 Akun</a>
+  </footer>
+
+<!-- Di head atau sebelum </body> -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script src="firebase.js"></script> 
+  <script src="script.js"></script>
+  <script>
+    getAllManga();
+    async function saveManga() {
+  if (!isAdmin()) {
+    alert("Akses ditolak!");
+    return;
+  }
+
+  const id = document.getElementById('editId').value || Date.now().toString();
+  const manga = {
+    id,
+    title_romanji: document.getElementById('titleRomanji').value.trim(),
+    title_original: document.getElementById('titleOriginal').value.trim(),
+    cover: document.getElementById('coverUrl').value.trim(),
+    author: document.getElementById('author').value.trim(),
+    year: parseInt(document.getElementById('year').value) || new Date().getFullYear(),
+    status: document.getElementById('status').value,
+    genres: document.getElementById('genres').value.split(',').map(g => g.trim()).filter(g => g),
+    synopsis: document.getElementById('synopsis').value.trim()
+  };
+
+  if (!manga.title_romanji || !manga.cover) {
+    alert("Judul dan cover wajib diisi!");
+    return;
+  }
+
+  await MANGA_REF.child(id).set(manga);
+  alert("Manga berhasil disimpan!");
+  loadAdminMangaList();
+  resetForm();
+}
+
+async function loadAdminMangaList() {
+  const snapshot = await MANGA_REF.once('value');
+  const mangaObj = snapshot.val();
+  const mangaList = mangaObj ? Object.values(mangaObj) : [];
+
+  const container = document.getElementById('mangaList');
+  container.innerHTML = mangaList.length === 0
+    ? "<p>Belum ada manga.</p>"
+    : mangaList.map(m => `
+        <div style="border:1px solid #ddd; padding:12px; border-radius:6px; margin-bottom:10px;">
+          <strong>${m.title_romanji}</strong> (${m.year})
+          <div style="margin-top:8px;">
+            <button onclick="editManga('${m.id}')" style="background:#3498db;color:white;border:none;padding:4px 8px;margin-right:6px;">✏️ Edit</button>
+            <button onclick="deleteManga('${m.id}')" style="background:#e74c3c;color:white;border:none;padding:4px 8px;">🗑️ Hapus</button>
+          </div>
+        </div>
+      `).join('');
+}
+
+function editManga(id) {
+  MANGA_REF.child(id).once('value', snapshot => {
+    const m = snapshot.val();
+    if (!m) return;
+
+    document.getElementById('editId').value = id;
+    document.getElementById('formTitle').textContent = 'Edit Manga';
+    document.getElementById('titleRomanji').value = m.title_romanji;
+    document.getElementById('titleOriginal').value = m.title_original;
+    document.getElementById('coverUrl').value = m.cover;
+    document.getElementById('author').value = m.author;
+    document.getElementById('year').value = m.year;
+    document.getElementById('status').value = m.status;
+    document.getElementById('genres').value = m.genres.join(', ');
+    document.getElementById('synopsis').value = m.synopsis;
+    
+    window.scrollTo(0, 0);
+  });
+}
+
+async function deleteManga(id) {
+  if (!confirm("Hapus manga ini?")) return;
+  await MANGA_REF.child(id).remove();
+  loadAdminMangaList();
+}
+  </script>
+</body>
+</html>
